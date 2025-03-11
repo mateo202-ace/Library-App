@@ -1,7 +1,34 @@
 import random
 
 # List of books
-list1 = ['book1', 'book2', 'book3', 'book4']
+list1 = [ 'x',
+    'The Housemaid',
+    'The Mysterious Case of the Alperton Angels',
+    'Butcher & Blackbird',
+    'The Reappearance of Rachel Price',
+    'Two Sides to Every Murder',
+    'W0rldtr33 Vol. 2',
+    'Horror Movie',
+    'Spiral',
+    'Loop',
+    'Ring',
+    'The Only Good Indians',
+    'The Boyfriend',
+    'Their Vicious Games',
+    'One By One',
+    'The September House',
+    'Assistant to the Villain',
+    'Home is Where the Bodies Are',
+    'Wrong Place Wrong Time',
+    'The 7 1/2 Deaths of Evelyn Hardcastle',
+    'The Perfect Marriage',
+    'Pretty Girls',
+    'The Thursday Murder Club',
+    'Verity',
+    'Tell Me What You Did',
+    'Black Chalk',
+    'Strange Picture'
+]
 
 # List of phrases for the next book
 list2 = [
