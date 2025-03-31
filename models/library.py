@@ -5,7 +5,7 @@ from models.book import Book
 
 class Library:
 
-    def __init__(self, name, csv_file="C:\\Users\\juan.mateo\\Security-Projects\\Security-Projects\\book-Library\\data\\books.csv"):
+    def __init__(self, name, csv_file="C:\\Users\\juanmateo\\Desktop\\Library app\\Library-App\\data"):
         # initializes a library, creates the name and the empty library
 
         self.name = name
@@ -79,7 +79,7 @@ class Library:
         if not did_not_finish:
             return "No books that you did not finish"
 
-        dnf_csv_file = "C:\\Users\\juan.mateo\\Security-Projects\\Security-Projects\\book-Library\\data\\dnf_books.csv"
+        dnf_csv_file = "C:\\Users\\juanmateo\\Desktop\\Library app\\Library-App\\data\\dnf_books.csv"
 
         # saves DNF books to new CSV file
         try:
