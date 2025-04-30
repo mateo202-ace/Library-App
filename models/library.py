@@ -74,7 +74,7 @@ class Library:
 
     def move_to_dnf_list(self):
         # looks for books in main Library that are DID NOT FINISH and moved them to a DNF lsit and removes them from main libarys
-        did_not_finish = [book for book in self.books if book.status == "Did not Finished"]
+        did_not_finish = [book for book in self.books if book.status == "Did Not Finish"]
 
         if not did_not_finish:
             return "No books that you did not finish"
@@ -97,7 +97,7 @@ class Library:
                         }
                     )
             # Removes book from main library
-            self.books = [book for book in self.books if book.status != "Did not Finished"]
+            self.books = [book for book in self.books if book.status != "Did Not Finish"]
             self.save_books_to_csv()
 
         except Exception as e:

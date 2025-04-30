@@ -8,41 +8,38 @@ csv_file = "/Users/juanmateo/Desktop/Library app/Library-App/data/books.csv"
 # Create library and load books from the CSV file
 my_library = Library("Andreas Library", csv_file)
 
+books_to_add = [
+    ("The Shadows", "Alex North", "Dark - Mysterious - Suspense", "To Be Read"),
+    ("Baby X", "Kira Peikoff", "Thriller - Suspense - Dark", "To Be Read"),
+    ("I Only Read Murder", "Ian Ferguson, Will Ferguson", "Mysterious - Suspense", "To Be Read"),
+    ("What the Hell Did I Just Read", "David Wong, Jason Pargin", "Dark - Mysterious - Suspense", "To Be Read"),
+    ("Sheets", "Brenna Thummler", "Moving - Young Adult reading", "To Be Read"),
+    ("Delicates", "Brenna Thummler", "Moving - Young Adult reading", "To Be Read"),
+    ("Uzumaki", "Junji Ito", "Dark - Mysterious - Suspense - Manga", "To Be Read"),
+    ("The Nice House on the Lake Vol. 1", "James Tynion IV", "Horror - Suspense - Comic", "To Be Read"),
+    ("The Nice House on the Lake Vol. 2", "James Tynion IV", "Horror - Suspense - Comic", "To Be Read"),
+    ("Deadly Class Vol. 1: Reagan Youth", "Rick Remender", "Horror - Suspense - Comic", "To Be Read"),
+    ("Deadly Class Vol. 2: Kids of the Black Hole", "Rick Remender", "Horror - Suspense - Comic", "To Be Read"),
+    ("The Department of Truth #1", "James Tynion IV", "Horror - Suspense - Comic", "To Be Read"),
+    ("The Department of Truth #2", "James Tynion IV", "Horror - Suspense - Comic", "To Be Read"),
+]
 
+# # Add each book to the library
+# for title, author, genre, status in books_to_add:
+#     genres = genre.split(" - ")  # Split genres into a list
+#     new_book = Book(title, author, genres, status)
+#     my_library.add_book(new_book)
+#     print(f"✅ Added: {title} by {author}")
 
-def adding_books():
-    booksyntax = ["Book Name", "Author", "Genre - Theme - Type", "Status"]
-    newbook = []
+# List all books in the library to confirm they were added
+#print("\nBooks in the library:")
+print(my_library.list_books())
 
-    while True:
-        print(f"this is the book formatting {booksyntax}" )
-        enter_book = input("What book would you like to enter into your library (or Type 'exit' to exit): ")
-        
-        if enter_book == "exit":
-            print("Come back any time to add more books!!!")
-            break
+results = my_library.move_to_dnf_list()
+print(results)
 
-        
-        book_title = input("Book Title: ")
-        book_author = input("Author: ")
-        book_genre = input("Genre: ")
-
-        valid_status = ["Status: To Be Read, Finished, Did Not Finish"]
-
-        book_status = input("Status: ")
-        if book_status not in valid_status:
-            print("Invalid Status please set one of the provided statuses")
-
-        
-        newbook = [book_title, book_author, book_genre, book_status]
-        my_library.add_book(newbook)
-
-
-
-# print(my_library.list_books())
-
-print("the next reandom book is..........:")
-print(my_library.pick_random_book()) 
+# print("the next reandom book is..........:")
+# print(my_library.pick_random_book()) 
 
 # print("the next reandom book is:")
 # print(my_library.pick_random_book()) 
