@@ -8,14 +8,14 @@ csv_file = "/Users/juanmateo/Desktop/Library app/Library-App/data/books.csv"
 # Create library and load books from the CSV file
 my_library = Library("Andreas Library", csv_file)
 
-books_to_add = [
-    ("The Deepest Lake", "Andromeda Romano-Lax", "Dark - Mysterious - Thriller", "To Be Read"),
-    ("NightWatching", "Tracy Sierra", "Thriller - Mystery", "To Be Read"),
-    ("Listen For The Lie", "Amy Tintera", "Mysterious - Thriller", "To Be Read"),
-    ("Midnight at the Bright Ideas Bookstore", "Matthew Sullivan", "Dark - Mysterious", "To Be Read"),
-    ("Serial Killer Support Group", "Saratoga Schaefer", "Mysterious - Thriller - Suspense", "To Be Read"),
-    ("Home is Where the Bodies Are", "Jeneva Rose", "Mysterious - Thriller - Suspense", "To Be Read"),
-]
+# books_to_add = [
+#     ("The Deepest Lake", "Andromeda Romano-Lax", "Dark - Mysterious - Thriller", "To Be Read"),
+#     ("NightWatching", "Tracy Sierra", "Thriller - Mystery", "To Be Read"),
+#     ("Listen For The Lie", "Amy Tintera", "Mysterious - Thriller", "To Be Read"),
+#     ("Midnight at the Bright Ideas Bookstore", "Matthew Sullivan", "Dark - Mysterious", "To Be Read"),
+#     ("Serial Killer Support Group", "Saratoga Schaefer", "Mysterious - Thriller - Suspense", "To Be Read"),
+#     ("Home is Where the Bodies Are", "Jeneva Rose", "Mysterious - Thriller - Suspense", "To Be Read"),
+# ]
 
 # # Add each book to the library
 #for title, author, genre, status in books_to_add:
