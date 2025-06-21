@@ -7,11 +7,14 @@ from typing import List, Dict, Optional
 from .book import Book
 
 class Library:
-    def __init__(self, name: str, csv_file: str):
+    def __init__(self, name: str, csv_file: str, dnf_csv_file: str = None):
         self.name = name
         self.csv_file = csv_file
+        self.dnf_csv_file = dnf_csv_file
         self.json_file = csv_file.replace('.csv', '_extended.json')
+        self.dnf_json_file = dnf_csv_file.replace('.csv', '_extended.json') if dnf_csv_file else None
         self.books = self.load_books()
+        self.dnf_books = self.load_dnf_books() if dnf_csv_file else []
 
     def load_books(self) -> List[Book]:
         books = []
@@ -79,6 +82,38 @@ class Library:
             
         return books
 
+    def load_dnf_books(self) -> List[Book]:
+        """Load books from DNF CSV file"""
+        books = []
+        
+        if not self.dnf_csv_file or not os.path.exists(self.dnf_csv_file):
+            return books
+            
+        try:
+            with open(self.dnf_csv_file, newline="", encoding="utf-8") as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    book = Book(
+                        title=row.get("Book Name:", "").strip(),
+                        author=row.get("Author", "").strip(),
+                        genre=row.get("Genre - Theme - Type", "").strip().split(" - "),
+                        status="Did Not Finish",  # Always DNF for this library
+                        rating=int(row.get("Rating", 0)),
+                        review=row.get("Review", ""),
+                        total_pages=int(row.get("Total Pages", 0)),
+                        pages_read=int(row.get("Pages Read", 0)),
+                        date_started=row.get("Date Started", ""),
+                        date_finished=row.get("Date Finished", ""),
+                        reading_time_minutes=int(row.get("Reading Time", 0)),
+                        isbn=row.get("ISBN", ""),
+                        cover_url=row.get("Cover URL", "")
+                    )
+                    books.append(book)
+        except Exception as e:
+            print(f"⚠️ Error loading DNF books: {e}")
+            
+        return books
+
     def save_books_to_json(self):
         try:
             data = {
@@ -139,6 +174,85 @@ class Library:
 
     def update_book(self, book: Book):
         self.save_books()
+
+    def move_to_dnf(self, book: Book):
+        """Move a book from main library to DNF library"""
+        if book in self.books:
+            # Remove from main library
+            self.books.remove(book)
+            
+            # Set status to DNF and add to DNF library
+            book.status = "Did Not Finish"
+            self.dnf_books.append(book)
+            
+            # Save both libraries
+            self.save_books()
+            self.save_dnf_books()
+            self.save_dnf_books_to_json()
+
+    def move_from_dnf(self, book: Book):
+        """Move a book from DNF library back to main library"""
+        if book in self.dnf_books:
+            # Remove from DNF library
+            self.dnf_books.remove(book)
+            
+            # Add to main library (status should already be updated)
+            self.books.append(book)
+            
+            # Save both libraries
+            self.save_books()
+            self.save_dnf_books()
+            self.save_dnf_books_to_json()
+
+    def save_dnf_books(self):
+        """Save DNF books to CSV file"""
+        if not self.dnf_csv_file:
+            return
+            
+        try:
+            with open(self.dnf_csv_file, "w", newline="", encoding="utf-8") as file:
+                fieldnames = [
+                    "Book Name:", "Author", "Genre - Theme - Type", "Status:",
+                    "Rating", "Review", "Total Pages", "Pages Read", 
+                    "Date Started", "Date Finished", "Reading Time", "ISBN", "Cover URL"
+                ]
+                writer = csv.DictWriter(file, fieldnames=fieldnames)
+                writer.writeheader()
+                
+                for book in self.dnf_books:
+                    writer.writerow({
+                        "Book Name:": book.title,
+                        "Author": book.author,
+                        "Genre - Theme - Type": " - ".join(book.genre) if book.genre else "",
+                        "Status:": book.status,
+                        "Rating": book.rating,
+                        "Review": book.review,
+                        "Total Pages": book.total_pages,
+                        "Pages Read": book.pages_read,
+                        "Date Started": book.date_started,
+                        "Date Finished": book.date_finished,
+                        "Reading Time": book.reading_time_minutes,
+                        "ISBN": book.isbn,
+                        "Cover URL": book.cover_url
+                    })
+        except Exception as e:
+            print(f"⚠️ Error saving DNF books: {e}")
+
+    def save_dnf_books_to_json(self):
+        """Save DNF books to JSON file"""
+        if not self.dnf_json_file:
+            return
+            
+        try:
+            data = {
+                'library_name': f"{self.name} - DNF Books",
+                'last_updated': datetime.now().isoformat(),
+                'books': [book.to_dict() for book in self.dnf_books]
+            }
+            with open(self.dnf_json_file, 'w', encoding='utf-8') as file:
+                json.dump(data, file, indent=2, ensure_ascii=False)
+        except Exception as e:
+            print(f"⚠️ Error saving DNF books to JSON: {e}")
 
     def get_book_by_title(self, title: str) -> Optional[Book]:
         for book in self.books:

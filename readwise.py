@@ -13,8 +13,9 @@ from utils.export_utils import export_to_csv, export_reading_report, export_to_j
 
 class ReadWiseApp:
     def __init__(self):
-        self.csv_file = "/Users/juanmateo/Desktop/Library app/Library-App/src/data/books.csv"
-        self.library = Library("ReadWise Library", self.csv_file)
+        self.csv_file = "/Users/juanmateo/Desktop/Library app/ReadWise/src/data/books.csv"
+        self.dnf_csv_file = "/Users/juanmateo/Desktop/Library app/ReadWise/src/data/dnf_books.csv"
+        self.library = Library("ReadWise Library", self.csv_file, self.dnf_csv_file)
         self.selected_book: Optional[Book] = None
         self.current_view = "library"
         
@@ -239,7 +240,7 @@ class ReadWiseApp:
     
     def show_dnf_view(self):
         """Show DNF books"""
-        dnf_books = [book for book in self.library.books if book.status == "Did Not Finish"]
+        dnf_books = self.library.dnf_books
         
         header = ft.Container(
             content=ft.Column([
@@ -424,6 +425,22 @@ class ReadWiseApp:
                 )
             )
         
+        # Add edit button
+        edit_button = ft.ElevatedButton(
+            text="Edit",
+            icon=ft.Icons.EDIT,
+            on_click=lambda e: self.show_edit_book_dialog(book),
+            height=30,
+            style=ft.ButtonStyle(
+                text_style=ft.TextStyle(size=12)
+            )
+        )
+        
+        book_info.append(ft.Container(
+            content=edit_button,
+            margin=ft.margin.only(top=10)
+        ))
+        
         return ft.Card(
             content=ft.Container(
                 content=ft.Column(book_info, spacing=8),
@@ -559,6 +576,189 @@ class ReadWiseApp:
         self.status_dropdown.value = "To Be Read"
         self.rating_slider.value = 0
         self.review_field.value = ""
+    
+    def show_edit_book_dialog(self, book):
+        """Show edit book dialog"""
+        try:
+            print(f"Edit button clicked for: {book.title}")
+            self.selected_book = book
+            self.original_status = book.status
+            
+            # Create separate fields for editing to avoid conflicts
+            edit_title_field = ft.TextField(label="Title", width=400, value=book.title)
+            edit_author_field = ft.TextField(label="Author", width=400, value=book.author)
+            edit_genre_field = ft.TextField(label="Genres (separate with ' - ')", width=400, 
+                                           value=" - ".join(book.genre) if book.genre else "")
+            edit_isbn_field = ft.TextField(label="ISBN (optional)", width=400, value=book.isbn or "")
+            edit_total_pages_field = ft.TextField(label="Total Pages", width=200, value=str(book.total_pages))
+            
+            edit_status_dropdown = ft.Dropdown(
+                label="Status",
+                width=200,
+                value=book.status,
+                options=[
+                    ft.dropdown.Option("To Be Read"),
+                    ft.dropdown.Option("Finished"),
+                    ft.dropdown.Option("Currently Reading"),
+                    ft.dropdown.Option("Did Not Finish"),
+                ]
+            )
+            
+            edit_rating_slider = ft.Slider(
+                min=0, max=5, divisions=5, width=350,
+                label="Rating: {value}",
+                value=float(book.rating)
+            )
+            
+            edit_review_field = ft.TextField(
+                label="Review (optional)",
+                multiline=True,
+                min_lines=3,
+                max_lines=5,
+                width=500,
+                value=book.review or ""
+            )
+            
+            # Store references for save function
+            self.edit_fields = {
+                'title': edit_title_field,
+                'author': edit_author_field,
+                'genre': edit_genre_field,
+                'isbn': edit_isbn_field,
+                'total_pages': edit_total_pages_field,
+                'status': edit_status_dropdown,
+                'rating': edit_rating_slider,
+                'review': edit_review_field
+            }
+            
+            edit_form = ft.Column([
+                ft.Row([
+                    ft.Column([
+                        edit_title_field,
+                        edit_author_field,
+                        edit_genre_field,
+                        edit_isbn_field,
+                    ], expand=True),
+                    ft.Column([
+                        edit_total_pages_field,
+                        edit_status_dropdown,
+                        ft.Text("Rating:", size=14, weight=ft.FontWeight.BOLD),
+                        edit_rating_slider,
+                    ], expand=True),
+                ]),
+                ft.Container(height=10),
+                edit_review_field,
+            ], spacing=10)
+            
+            self.edit_dialog = ft.AlertDialog(
+                modal=True,
+                title=ft.Text("Edit Book"),
+                content=ft.Container(
+                    content=edit_form,
+                    width=500,
+                    height=600,
+                ),
+                actions=[
+                    ft.TextButton("Cancel", on_click=self.close_edit_dialog),
+                    ft.ElevatedButton("Save Changes", on_click=self.save_book_edit),
+                ],
+            )
+            
+            print("Creating edit overlay...")
+            # Use a simple overlay approach that definitely works
+            edit_overlay = ft.Container(
+                content=ft.Card(
+                    content=ft.Container(
+                        content=ft.Column([
+                            ft.Row([
+                                ft.Text("Edit Book", size=24, weight=ft.FontWeight.BOLD),
+                                ft.IconButton(
+                                    icon=ft.Icons.CLOSE,
+                                    on_click=self.close_edit_dialog
+                                )
+                            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
+                            edit_form,
+                            ft.Row([
+                                ft.ElevatedButton("Save Changes", on_click=self.save_book_edit),
+                                ft.TextButton("Cancel", on_click=self.close_edit_dialog),
+                            ], alignment=ft.MainAxisAlignment.END)
+                        ], spacing=20, scroll=ft.ScrollMode.AUTO),
+                        padding=20,
+                        width=700,
+                        height=600
+                    ),
+                    elevation=10
+                ),
+                bgcolor=ft.Colors.BLACK54,  # Semi-transparent background
+                alignment=ft.alignment.center,
+                width=self.content_area.page.window.width,
+                height=self.content_area.page.window.height
+            )
+            
+            # Store reference and add to page overlay
+            self.edit_overlay = edit_overlay
+            self.content_area.page.overlay.append(edit_overlay)
+            self.content_area.page.update()
+            print("Edit overlay should be visible now")
+            
+        except Exception as ex:
+            print(f"Error in show_edit_book_dialog: {ex}")
+            import traceback
+            traceback.print_exc()
+    
+    def save_book_edit(self, e):
+        """Save book edits with DNF detection"""
+        try:
+            # Use edit fields instead of add fields
+            if not self.edit_fields['title'].value.strip() or not self.edit_fields['author'].value.strip():
+                return
+            
+            # Store old status for comparison
+            old_status = self.original_status
+            new_status = self.edit_fields['status'].value
+            
+            # Update book properties
+            self.selected_book.title = self.edit_fields['title'].value.strip()
+            self.selected_book.author = self.edit_fields['author'].value.strip()
+            self.selected_book.genre = [g.strip() for g in self.edit_fields['genre'].value.split(" - ") if g.strip()]
+            self.selected_book.status = new_status
+            self.selected_book.rating = int(self.edit_fields['rating'].value)
+            self.selected_book.review = self.edit_fields['review'].value.strip()
+            self.selected_book.total_pages = int(self.edit_fields['total_pages'].value) if self.edit_fields['total_pages'].value.isdigit() else 0
+            self.selected_book.isbn = self.edit_fields['isbn'].value.strip()
+            
+            # Check for status changes and handle library transfers
+            if old_status != "Did Not Finish" and new_status == "Did Not Finish":
+                # Moving from main library to DNF
+                self.library.move_to_dnf(self.selected_book)
+            elif old_status == "Did Not Finish" and new_status != "Did Not Finish":
+                # Moving from DNF back to main library
+                self.library.move_from_dnf(self.selected_book)
+            else:
+                # Status didn't change libraries, just update
+                self.library.update_book(self.selected_book)
+            
+            # Close dialog and refresh
+            try:
+                self.content_area.page.overlay.remove(self.edit_overlay)
+            except:
+                self.content_area.page.overlay.clear()
+            self.content_area.page.update()
+            self.refresh_book_list()
+            
+        except Exception as ex:
+            print(f"Error editing book: {ex}")
+            # Don't close dialog on error so user can try again
+    
+    def close_edit_dialog(self, e):
+        """Close edit dialog"""
+        try:
+            self.content_area.page.overlay.remove(self.edit_overlay)
+            self.content_area.page.update()
+        except:
+            # Fallback - clear all overlays
+            self.content_area.page.overlay.clear()
+            self.content_area.page.update()
     
     def export_csv(self, e):
         """Export to CSV"""

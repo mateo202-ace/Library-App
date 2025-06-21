@@ -1,0 +1,81 @@
+{
+  "library_name": "ReadWise Library - DNF Books",
+  "last_updated": "2025-06-21T15:44:24.183106",
+  "books": [
+    {
+      "title": "Mexican Gothic",
+      "author": "Silvia Moreno-Garcia",
+      "genre": "Dark - Mysterious - Suspense",
+      "status": "Did Not Finish",
+      "rating": 0,
+      "review": "",
+      "total_pages": 0,
+      "pages_read": 0,
+      "date_started": "",
+      "date_finished": "",
+      "reading_time_minutes": 0,
+      "isbn": "",
+      "cover_url": ""
+    },
+    {
+      "title": "I Fell in Love with Hope",
+      "author": "Lancali",
+      "genre": "Moving - Romance",
+      "status": "Did Not Finish",
+      "rating": 0,
+      "review": "",
+      "total_pages": 0,
+      "pages_read": 0,
+      "date_started": "",
+      "date_finished": "",
+      "reading_time_minutes": 0,
+      "isbn": "",
+      "cover_url": ""
+    },
+    {
+      "title": "Hunted",
+      "author": "Darcy Coates",
+      "genre": "Thriller - Suspense - Dark",
+      "status": "Did Not Finish",
+      "rating": 0,
+      "review": "",
+      "total_pages": 0,
+      "pages_read": 0,
+      "date_started": "",
+      "date_finished": "",
+      "reading_time_minutes": 0,
+      "isbn": "",
+      "cover_url": ""
+    },
+    {
+      "title": "Anatomy: A Love Story",
+      "author": "Dana Schwartz",
+      "genre": "Mysterious - Romance",
+      "status": "Did Not Finish",
+      "rating": 0,
+      "review": "",
+      "total_pages": 0,
+      "pages_read": 0,
+      "date_started": "",
+      "date_finished": "",
+      "reading_time_minutes": 0,
+      "isbn": "",
+      "cover_url": ""
+    },
+    {
+      "title": "Scott Pilgrim Volume 3",
+      "author": "Bryan Lee O'Malley",
+      "genre": "Feel good - Funny- Comic",
+      "status": "Did Not Finish",
+      "rating": 0,
+      "review": "",
+      "total_pages": 0,
+      "pages_read": 0,
+      "date_started": "",
+      "date_finished": "",
+      "reading_time_minutes": 0,
+      "isbn": "",
+      "cover_url": ""
+    }
+  ]
+}
