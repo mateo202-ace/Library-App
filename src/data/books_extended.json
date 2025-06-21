@@ -1,22 +1,7 @@
 {
-  "library_name": "Andreas Library",
-  "last_updated": "2025-06-21T10:06:23.021078",
+  "library_name": "ReadWise Library",
+  "last_updated": "2025-06-21T15:49:44.410343",
   "books": [
-    {
-      "title": "Scott Pilgrim Volume 3",
-      "author": "Bryan Lee O'Malley",
-      "genre": "Feel good - Funny- Comic",
-      "status": "Finished",
-      "rating": 0,
-      "review": "",
-      "total_pages": 0,
-      "pages_read": 0,
-      "date_started": "",
-      "date_finished": "",
-      "reading_time_minutes": 0,
-      "isbn": "",
-      "cover_url": ""
-    },
     {
       "title": "Scott Pilgrim Volume 2",
       "author": "Bryan Lee O'Malley",
@@ -966,6 +951,21 @@
       "title": "Home is Where the Bodies Are",
       "author": "Jeneva Rose",
       "genre": "Mysterious - Thriller - Suspense",
+      "status": "To Be Read",
+      "rating": 0,
+      "review": "",
+      "total_pages": 0,
+      "pages_read": 0,
+      "date_started": "",
+      "date_finished": "",
+      "reading_time_minutes": 0,
+      "isbn": "",
+      "cover_url": ""
+    },
+    {
+      "title": "Scott Pilgrim Volume 4",
+      "author": "Bryan Lee O'Malley",
+      "genre": "Feel good - Funny- Comic",
       "status": "To Be Read",
       "rating": 0,
       "review": "",
