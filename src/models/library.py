@@ -277,11 +277,11 @@ class Library:
         return [book for book in self.books if book.rating == rating]
 
     def get_reading_statistics(self) -> Dict:
-        total_books = len(self.books)
+        total_books = len(self.books) + len(self.dnf_books)  # Include DNF books in total
         finished_books = len([b for b in self.books if b.status == "Finished"])
         currently_reading = len(self.get_currently_reading())
         to_be_read = len([b for b in self.books if b.status == "To Be Read"])
-        dnf_books = len([b for b in self.books if b.status == "Did Not Finish"])
+        dnf_books = len(self.dnf_books)  # Count from separate DNF list
         
         total_pages_read = sum(b.pages_read for b in self.books if b.pages_read > 0)
         total_reading_time = sum(b.reading_time_minutes for b in self.books)

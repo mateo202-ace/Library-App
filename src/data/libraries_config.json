@@ -1,0 +1,20 @@
+{
+  "libraries": [
+    {
+      "id": "main",
+      "name": "Main Library",
+      "created_date": "2025-06-21T19:47:33.839871",
+      "color": "#2196F3",
+      "icon": "library_books"
+    },
+    {
+      "id": "test",
+      "name": "test",
+      "created_date": "2025-06-21T20:22:32.091533",
+      "color": "#2196F3",
+      "icon": "library_books"
+    }
+  ],
+  "current_library": "main",
+  "max_libraries": 5
+}
